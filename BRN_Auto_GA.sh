@@ -11,6 +11,7 @@ sudo npm init
 sudo npm install ethers@6
 gh repo clone abhiag/BRN_AUTOBOT_GACRYPTO
 cd BRN_AUTOBOT_GACRYPTO
+echo
 
 echo "running node index.js...." 
 node index.js
