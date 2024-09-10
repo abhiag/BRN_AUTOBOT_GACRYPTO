@@ -7,7 +7,5 @@ sudo apt-get install nodejs npm -y
 sudo npm install n -g
 sudo n latest
 sudo npm install prompt-sync
-mkdir bot-brn
-cd bot-brn
 npm init
 npm install ethers@5
