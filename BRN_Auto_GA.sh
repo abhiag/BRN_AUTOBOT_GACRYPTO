@@ -9,10 +9,10 @@ sudo npm install n -g
 sudo n latest
 sudo npm init -y
 sudo npm install ethers@5
-gh repo clone abhiag/BRN_AUTOBOT_GACRYPTO
+sudo npm install prompt-sync
+git clone https://github.com/abhiag/BRN_AUTOBOT_GACRYPTO.git 
 cd BRN_AUTOBOT_GACRYPTO
 echo
-
 echo "running node index.js...." 
 node index.js
 echo "Setup complete! The Executor is now running."
