@@ -61,7 +61,7 @@ const bridge = async (privateKey) => {
     let addrBridge = config.address
     let amountBridge = parseEther(generateRandomAmount())
     console.log(`bridge amount ${formatEther(amountBridge)} ETH`)
-    let netAmountBridge = amountBridge - (amountBridge * 0.01)
+    let netAmountBridge = amountBridge - (amountBridge * 0.001)
     console.log(`net amount ${formatEther(netAmountBridge.toString())}`)
     let chainId = getRandomElement()
     console.log(`bridge from ${config.name} to ${chainId}`)
