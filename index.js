@@ -15,13 +15,12 @@ const sleepTimer = () => {
     return Math.random() * (120000 - 60000) + 60000;
 }
 
-// Updated generateRandomAmount function with max 0.01 ETH
 function generateRandomAmount() {
-    return parseFloat(Math.random() * (0.0020 - 0.0010) + 0.0010).toFixed(4);  // max 0.002 ETH
+    return parseFloat(Math.random() * (0.0200 - 0.0100) + 0.0100).toFixed(4);
 }
 
 function getRandomElement() {
-    let chainList = ["2737370", "f707370", "26c7373", "1726274"];
+    let chainList = ["2737370","f707370","26c7373","1726274"]
     const randomIndex = Math.floor(Math.random() * chainList.length);
     return chainList[randomIndex];
 }
@@ -51,72 +50,69 @@ function getSourceNetwork() {
         address: "0x8D86c3573928CE125f9b2df59918c383aa2B514D",
         provider: "https://arbitrum-sepolia.blockpi.network/v1/rpc/public",
         bridgeId: "1726274"
-    }];
+    }]
     
     const randomIndex = Math.floor(Math.random() * sourceConfigList.length);
     return sourceConfigList[randomIndex];
 }
 
-const bridge = async (privateKey, destinationAddress) => {
-    console.log("=========================================");
-    let config = getSourceNetwork();
+const bridge = async (privateKey) => {
+    console.log("=========================================")
+    let config = getSourceNetwork()
 
-    let arbProvider = config.provider;
+    let arbProvider = config.provider
     const providerJSON = new ethers.providers.JsonRpcProvider(arbProvider);
-    const wallet = new ethers.Wallet(privateKey, providerJSON);
-    const balance = await providerJSON.getBalance(wallet.address).catch((e) => 0);
-    console.log(`loaded wallet ${config.name}, balance: ${formatEther(balance)} ETH`);
+    const wallet = new ethers.Wallet(privateKey, providerJSON)
+    const balance = await providerJSON.getBalance(wallet.address).catch((e) => 0)
+    console.log(`loaded wallet ${config.name}, balance: ${formatEther(balance)} ETH`)
 
-    let addrBridge = config.address;
-    let amountBridge = parseEther(generateRandomAmount());
-    console.log(`bridge amount ${formatEther(amountBridge)} ETH`);
-    let netAmountBridge = amountBridge - (amountBridge * 0.01);
-    console.log(`net amount ${formatEther(netAmountBridge.toString())}`);
-    let chainId = getRandomElement();
-    console.log(`bridge from ${config.name} to ${chainId}`);
-
+    let addrBridge = config.address
+    let amountBridge = parseEther(generateRandomAmount())
+    console.log(`bridge amount ${formatEther(amountBridge)} ETH`)
+    let netAmountBridge = amountBridge - (amountBridge * 0.01)
+    console.log(`net amount ${formatEther(netAmountBridge.toString())}`)
+    let chainId = getRandomElement()
+    console.log(`bridge from ${config.name} to ${chainId}`)
+    
     // Translated message
     if (chainId == config.bridgeId) {
-        console.log(`[x] Destination Chain Cannot Be the Same as Source Chain, Try Again`);
-        return bridge(privateKey, destinationAddress);
+        console.log(`[x] Destination Chain Cannot Be the Same as Source Chain, Try Again`)
+        return bridge(privateKey)
     }
     
     // Translated message
     if (balance.lt(amountBridge)) {
-        console.log(`[x] Insufficient Balance to Bridge, Try Again`);
-        return bridge(privateKey, destinationAddress);
+        console.log(`[x] Insufficient Balance to Bridge, Try Again`)
+        return bridge(privateKey)
     }
 
-    let dataBridge = `0x56591d596${chainId}000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000${destinationAddress.slice(2).toLowerCase()}00000000000000000000000000000000000000000000000000${BigNumber.from(netAmountBridge.toString())._hex.slice(2)}0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000${BigNumber.from(amountBridge.toString())._hex.slice(2)}`;
+    let dataBridge = `0x56591d596${chainId}000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000${wallet.address.slice(2).toLowerCase()}00000000000000000000000000000000000000000000000000${BigNumber.from(netAmountBridge.toString())._hex.slice(2)}0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000${BigNumber.from(amountBridge.toString())._hex.slice(2)}`
 
     let txEstimateGas = await wallet.estimateGas({
         to: addrBridge,
         value: amountBridge,
         data: dataBridge
-    }).catch((e) => ({status: 500, message: e.reason}));
+    }).catch((e) => ({status: 500, message: e.reason}))
 
     if (BigNumber.isBigNumber(txEstimateGas)) {
         let txSend = await wallet.sendTransaction({
             to: addrBridge,
             value: amountBridge,
             data: dataBridge
-        }).catch((e) => ({status: 500, message: e.reason, hash: null}));
+        }).catch((e) => ({status: 500, message: e.reason, hash: null}))
 
-        console.log(`√ Tx Bridge: ${txSend.hash}`);
+        console.log(`√ Tx Bridge: ${txSend.hash}`)
         return setTimeout(() => {
-            bridge(privateKey, destinationAddress);
-        }, sleepTimer());
+            bridge(privateKey)
+        }, sleepTimer())
     } else {
-        console.log(txEstimateGas);
+        console.log(txEstimateGas)
         return setTimeout(() => {
-            bridge(privateKey, destinationAddress);
-        }, sleepTimer());
+            bridge(privateKey)
+        }, sleepTimer())
     }
-};
+}
 
-// Prompt the user to enter their private key and destination address
+// Prompt the user to enter their private key
 const privateKey = prompt('Please enter your private key: ');
-const destinationAddress = prompt('Please enter the destination address: ');
-
-// Execute the bridge function with the private key and destination address entered by the user
-bridge(privateKey, destinationAddress);
+bridge(privateKey);  // Execute the bridge function with the private key entered by the user
