@@ -8,7 +8,7 @@ const sleepTimer = () => {
 }
 
 function generateRandomAmount() {
-    return parseFloat(Math.random() * (0.0200 - 0.0100) + 0.0100).toFixed(4);
+    return parseFloat(Math.random() * (0.0100 - 0.0050) + 0.0050).toFixed(4);  // max 0.01 ETH
 }
 
 function getRandomElement() {
