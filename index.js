@@ -1,3 +1,11 @@
+// Display message at the start
+console.log("=========================================");
+console.log("        This script is produced by       ");
+console.log("             GA Crypto                   ");
+console.log("  Join us on our Telegram channel:       ");
+console.log("  https://t.me/GaCryptOfficial           ");
+console.log("=========================================\n");
+
 const { BigNumber } = require("ethers");
 const { parseEther, formatEther } = require("ethers/lib/utils");
 const ethers = require('ethers');
@@ -13,7 +21,7 @@ function generateRandomAmount() {
 }
 
 function getRandomElement() {
-    let chainList = ["2737370","f707370","26c7373","1726274"];
+    let chainList = ["2737370", "f707370", "26c7373", "1726274"];
     const randomIndex = Math.floor(Math.random() * chainList.length);
     return chainList[randomIndex];
 }
