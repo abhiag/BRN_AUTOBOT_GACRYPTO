@@ -1,10 +1,13 @@
-// Display message at the start
-console.log("=========================================");
+// Sky Blue Color: \x1b[36m
+// Reset Color: \x1b[0m
+
+// Display message at the start with Sky Blue color
+console.log("\x1b[36m=========================================");
 console.log("        This script is produced by       ");
 console.log("             GA Crypto                   ");
 console.log("  Join us on our Telegram channel:       ");
 console.log("  https://t.me/GaCryptOfficial           ");
-console.log("=========================================\n");
+console.log("=========================================\n\x1b[0m"); // Reset the color after the display
 
 const { BigNumber } = require("ethers");
 const { parseEther, formatEther } = require("ethers/lib/utils");
