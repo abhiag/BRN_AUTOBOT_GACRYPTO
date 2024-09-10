@@ -16,7 +16,7 @@ const sleepTimer = () => {
 }
 
 function generateRandomAmount() {
-    return parseFloat(Math.random() * (0.0020 - 0.0010) + 0.0010).toFixed(4);
+    return parseFloat(Math.random() * (0.0150 - 0.0100) + 0.0100).toFixed(4);
 }
 
 function getRandomElement() {
